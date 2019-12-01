@@ -1,0 +1,6 @@
+server:
+  ingress:
+      annotations:
+        kubernetes.io/ingress.class: nginx
+      hosts:
+         - gocd.infrastructure-sandbox.com
