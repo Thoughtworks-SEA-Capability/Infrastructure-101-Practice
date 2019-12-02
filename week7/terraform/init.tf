@@ -3,6 +3,6 @@
 #################################################################
 
 provider "aws" {
-  profile = "${var.saml_profile}"
-  region = "${var.region}"
+  profile = var.saml_profile
+  region = var.region
 }

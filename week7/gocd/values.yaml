@@ -3,4 +3,4 @@ server:
       annotations:
         kubernetes.io/ingress.class: nginx
       hosts:
-         - gocd.infrastructure-sandbox.com
+         - <gocd-domain-name>.infrastructure-sandbox.com

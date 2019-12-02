@@ -2,5 +2,4 @@ controller:
   service:
     type: NodePort
     nodePorts:
-      http: 30925
       https: 30950

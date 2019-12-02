@@ -1,2 +1,2 @@
 ingress_domain="infrastructure-sandbox.com"
-security_group_id="sg-0504468da271b3ff0"
+security_group_id="<security group created by EKS>"
