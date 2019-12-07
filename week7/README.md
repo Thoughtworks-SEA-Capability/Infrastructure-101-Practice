@@ -8,16 +8,11 @@ We are using the following version of the dependency tools
 - Saml2aws v2.18.0
 - GoCD v19.10.0
 
+Setup GoCD locally through the following link
+`https://www.gocd.org/test-drive-gocd.html`
+
 To setup GoCD, we need to do the following setups.
 
-1. Creation of EKS cluster (Refer to eksctl folder)
-    ```
-    eksctl create cluster -f eksctl/cluster.yaml --profile <aws-profile-name>
-    ```
-1. Creation of GoCD namespace (Refer to eksctl folder)
-    ```
-    kubectl apply -f eksctl/values.yaml
-    ```
 1. Installation of nginx-ingress (Refer to ingress folder)
     ```
     bash ingress/install-ingress.sh
@@ -27,7 +22,7 @@ To setup GoCD, we need to do the following setups.
     bash gocd/deploy.sh
     ```
 1. Creation of LoadBalancer to expose GoCD to the internet (Automation using terraform, do refer to terraform folder for reference).
- 
+
     ```
     terraform init
     ```
