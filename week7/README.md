@@ -1,6 +1,6 @@
 # Setup
 
-GoCD server is deployed to EKS cluster in AWS
+You can deploy GoCD server to EKS cluster. Below is the script reference if you are interested to do so.
 
 We are using the following version of the dependency tools
 - Helm v3.0.0
@@ -17,7 +17,7 @@ To setup GoCD, we need to do the following setups.
     ```
     bash ingress/install-ingress.sh
     ```
-1. Deploy GoCD on to the EKS cluster (Refer to gocd folder)
+1. Deploy GoCD on to the EKS cluster (Refer to gocd folder). Remember to create `gocd` namespace.
     ```
     bash gocd/deploy.sh
     ```
@@ -38,22 +38,7 @@ To setup GoCD, we need to do the following setups.
 
 Note: As we have deployed GoCD server to the cluster, it comes with [GoCD elastic agents](https://docs.gocd.org/current/configuration/elastic_agents.html)
 
-Head over to this link to get started with pipeline course
-https://gocd.infrastructure-sandbox.com/go/pipelines#!/
+Terraform script in this project is using Route53 domain `*.infrastructure-sandbox.com` on AWS Beach account. 
 
 You can create GOCD pipeline as a code using [YAML](https://github.com/tomzo/gocd-yaml-config-plugin).
 Find out more about what it is about [here!](https://docs.gocd.org/current/advanced_usage/pipelines_as_code.html)
-
-# Scenario
-
-
-1. Create a pipeline of Service A where its task is to print "My Service A Pipeline" on GoCD server.
-
-    **Hint** Refer to the YAML configuration file above to find out more about the syntax
-1. Create another service B pipeline which depends on Service A. Create a textfile which contains text such as "Hello from Service B".
-
-    **Hint** Having a pipeline as upstream material and create an artifact
-1. Having another independent Service C which will then fan-in to an integration pipeline.
-1. Deploying to multiple environment. Fan-out from integration pipeline.Print out the textfile created in step 2.
-
-    **Hint** Try to fetch the artifact
