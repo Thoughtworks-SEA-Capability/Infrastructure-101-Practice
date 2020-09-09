@@ -1,7 +1,7 @@
 # Attempted answers to some common questions asked during the guild
 
 ## What's the difference between Vagrant and VirtualBox.
-- Think of VirtualBox as being the actual infrastructure provider (the virtualization platform which runs the VMs) and Vagrant as being clever and clean way to interact with VirtualBox such that with a single Vagrantfile you're able to spin up multiple VMs on VirtualBox with the exact same configuration, instead of having to manually and repetitively click through the VirtualBox GUI X times if you want to provision X machines (or figure out how to script against the VirtualBox API yourself,  although that's still a step better).
+Think of VirtualBox as being the actual infrastructure provider (the virtualization platform which runs the VMs) and Vagrant as being clever and clean way to interact with VirtualBox such that with a single Vagrantfile you're able to spin up multiple VMs on VirtualBox with the exact same configuration, instead of having to manually and repetitively click through the VirtualBox GUI X times if you want to provision X machines (or figure out how to script against the VirtualBox API yourself,  although that's still a step better).
 
 In fact, Vagrant doesn't just work with VirtualBox, VirtualBox is just one of the many providers (https://www.vagrantup.com/docs/providers) that ship with Vagrant out of the box (VirtualBox just happens to be the default provider, hence we used it in the short guild exercise). So think of Vagrant as a nice and uniform (in principle) way of writing configuration for different backend infrastructure providers (various virtualization, containerization, or cloud platforms, eg. VMWare, Docker, AWS).
 
@@ -33,21 +33,16 @@ Answering this question requires understanding a little bit more about `systemd`
 
 You can get most of the answer from `User=,Group` option documented in the `systemd.exec` man page: https://www.freedesktop.org/software/systemd/man/systemd.exec.html  (you can also run `man systemd.exec` in your linux box to get this)
 
-```
-User=, Group=
-           Set the UNIX user or group that the processes are executed as, respectively. Takes a single user or group name, or a numeric ID as argument. For *system services* (services run by the system service manager, i.e.managed by PID 1) and for user services of the root user (services managed by root's instance of systemd --user), the default is "root", but User= may be used to specify a different user. *For user services of any other user, switching user identity is not permitted, hence the only valid setting is the same user the user's service manager is running as*. If no group is set, the default group of the user is used. This setting does not affect commands whose command line is prefixed with "+".
-```
-(bolding my own)
+>User=, Group=
+>           Set the UNIX user or group that the processes are executed as, respectively. Takes a single user or group name, or a numeric ID as argument. For *system services* (services run by the system service manager, i.e.managed by PID 1) and for user services of the root user (services managed by root's instance of systemd --user), the default is "root", but User= may be used to specify a different user. *For user services of any other user, switching user identity is not permitted, hence the only valid setting is the same user the user's service manager is running as*. If no group is set, the default group of the user is used. This setting does not affect commands whose command line is prefixed with "+".
 
 So to understand this fully, we need to understand the distinction between the *system service manager* vs *user service manager instances* (the service manager = systemd). Basically, the manpage says that if the service is being run by the system service manager, or the `root` user's systemd instance, the default user used to run the service is `root` (if you omit setting the user via `User=` in your unit file). It also pretty much says that setting the `User=` and `Group=` options are basically only valid for services to be run by the *system* service manager instance, since, if the service is being run by a user systemd instance, your service should be run with the same user running that systemd instance anyway.
 
 So what is this *system service manager* vs *user service manager instances* thing? From the systemd manpage: https://www.freedesktop.org/software/systemd/man/systemd.html#
 
-```
-systemd is a system and service manager for Linux operating systems. When run as first process on boot (as PID 1), it acts as init system that brings up and maintains userspace services. *Separate instances are started for logged-in users to start their services.*
+> systemd is a system and service manager for Linux operating systems. When run as first process on boot (as PID 1), it acts as init system that brings up and maintains userspace services. *Separate instances are started for logged-in users to start their services.*
 
-systemd is usually not invoked directly by the user, but is installed as the /sbin/init symlink and started during early boot. The user manager instances are started automatically through the user@.service(5) service.
-```
+> systemd is usually not invoked directly by the user, but is installed as the /sbin/init symlink and started during early boot. The user manager instances are started automatically through the user@.service(5) service.
 
 In other words, there can be multiple systemd instances running, the system one being the very first one that runs on boot (PID 1), and the ones that are subsequently started when users login (or can be configured to start on boot time as well); these user systemd instances can be used to manage services and other systemd units specific to that user. See https://wiki.archlinux.org/index.php/Systemd/User and https://www.freedesktop.org/software/systemd/man/user@.service.html# for more.
 
